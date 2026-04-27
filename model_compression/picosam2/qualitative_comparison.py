@@ -212,10 +212,12 @@ def main():
     print("Loading COCO annotations...")
     coco = COCO(COCO_ANN_FILE)
 
-    # Get valid annotations
+    # Get valid annotations (skip humans)
+    person_cat_ids = coco.getCatIds(catNms=["person"])
     all_anns = [
         ann for ann in coco.loadAnns(coco.getAnnIds())
         if "segmentation" in ann and ann.get("iscrowd", 0) == 0 and ann["area"] > 10000
+        and ann["category_id"] not in person_cat_ids
     ]
 
     # Filter to existing images
@@ -229,8 +231,12 @@ def main():
     print(f"Found {len(existing_anns)} valid annotations")
 
     # Sample 3 images
-    random.seed(42)
-    selected_anns = random.sample(existing_anns, min(3, len(existing_anns)))
+    random.seed(1234)
+    #selected_indices = random.sample(range(len(existing_anns)), min(3, len(existing_anns)))
+    #selected_indices = [15, 785, 2374]
+    selected_indices = [957, 785, 2374]
+    selected_anns = [existing_anns[i] for i in selected_indices]
+    print(f"Selected annotation indices: {selected_indices}")
 
     samples = []
 
@@ -264,6 +270,22 @@ def main():
 
         predictions = {}
 
+        # SAM2
+        print("  Running SAM2...")
+        pred_sam2_full = run_sam2(sam2_predictor, image_np, bbox)
+        pred_sam2_crop = pred_sam2_full[y1:y2, x1:x2].astype(np.float32)
+        pred_sam2_display = np.array(Image.fromarray((pred_sam2_crop * 255).astype(np.uint8)).resize(
+            (display_size, display_size), Image.NEAREST)) / 255.0
+        predictions["SAM2.1 L"] = pred_sam2_display
+
+        # SAM3
+        print("  Running SAM3...")
+        pred_sam3_full = run_sam3(sam3_processor, pil_image, bbox, img_w, img_h)
+        pred_sam3_crop = pred_sam3_full[y1:y2, x1:x2]
+        pred_sam3_display = np.array(Image.fromarray((pred_sam3_crop * 255).astype(np.uint8)).resize(
+            (display_size, display_size), Image.NEAREST)) / 255.0
+        predictions["SAM3"] = pred_sam3_display
+
         # PicoSAM2
         print("  Running PicoSAM2...")
         pred_picosam2 = run_picosam(picosam2, image_crop, DEVICE)
@@ -278,22 +300,6 @@ def main():
             (display_size, display_size), Image.BILINEAR)) / 255.0
         predictions["PicoSAM3"] = pred_picosam3_display
 
-        # SAM2
-        print("  Running SAM2...")
-        pred_sam2_full = run_sam2(sam2_predictor, image_np, bbox)
-        pred_sam2_crop = pred_sam2_full[y1:y2, x1:x2].astype(np.float32)
-        pred_sam2_display = np.array(Image.fromarray((pred_sam2_crop * 255).astype(np.uint8)).resize(
-            (display_size, display_size), Image.NEAREST)) / 255.0
-        predictions["SAM2"] = pred_sam2_display
-
-        # SAM3
-        print("  Running SAM3...")
-        pred_sam3_full = run_sam3(sam3_processor, pil_image, bbox, img_w, img_h)
-        pred_sam3_crop = pred_sam3_full[y1:y2, x1:x2]
-        pred_sam3_display = np.array(Image.fromarray((pred_sam3_crop * 255).astype(np.uint8)).resize(
-            (display_size, display_size), Image.NEAREST)) / 255.0
-        predictions["SAM3"] = pred_sam3_display
-
         samples.append({
             "image_crop": image_crop_display,
             "gt_mask": gt_mask_display,
@@ -301,7 +307,7 @@ def main():
         })
 
     print("\nCreating comparison figure...")
-    create_qualitative_comparison(samples, {"PicoSAM2": None, "PicoSAM3": None, "SAM2": None, "SAM3": None})
+    create_qualitative_comparison(samples, {"SAM2.1 L": None, "SAM3": None, "PicoSAM2": None, "PicoSAM3": None})
 
     print("\nDone!")
 
