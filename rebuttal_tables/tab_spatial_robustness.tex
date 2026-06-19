@@ -1,0 +1,17 @@
+\begin{table}[ht]
+  \centering
+  \small
+  \caption{Robustness to spatial bbox perturbations (mean$\pm$std over 5 trials). Each column is a perturbation level expressed as a fraction of bbox size (uniform centre shift $\pm s/2$, Gaussian dimension noise $\sigma=s/2$).}
+  \label{tab:spatial_robustness}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{llcccccccccc}
+    \toprule
+    \textbf{Model} & \textbf{Dataset} & \multicolumn{2}{c}{\textbf{0\%}} & \multicolumn{2}{c}{\textbf{5\%}} & \multicolumn{2}{c}{\textbf{10\%}} & \multicolumn{2}{c}{\textbf{20\%}} & \multicolumn{2}{c}{\textbf{30\%}} \\
+    \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12}
+    & & mIoU & mAP & mIoU & mAP & mIoU & mAP & mIoU & mAP & mIoU & mAP \\
+    \midrule
+    \multirow{2}{*}{PicoSAM3 (distilled)} & COCO val2017 & 0.653 & 0.435 & 0.644 & 0.422 & 0.625 & 0.394 & 0.581{\tiny$\pm$0.001} & 0.330{\tiny$\pm$0.001} & 0.537{\tiny$\pm$0.001} & 0.271{\tiny$\pm$0.001} \\
+     & LVIS v1 val & 0.637 & 0.429 & 0.629 & 0.417 & 0.611 & 0.391 & 0.569{\tiny$\pm$0.001} & 0.329{\tiny$\pm$0.000} & 0.524 & 0.268 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

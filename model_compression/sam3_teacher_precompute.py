@@ -1,4 +1,5 @@
 import os
+import argparse
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -92,13 +93,24 @@ def bbox_to_cxcywh_normalized(bbox, img_w, img_h):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--rank", type=int, default=0)
+    parser.add_argument("--world_size", type=int, default=1)
+    parser.add_argument("--gpu", type=int, default=None)
+    args = parser.parse_args()
+
+    if args.gpu is not None:
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
+
     wandb.init(
         project="PicoSAM3-teacher-cache",
-        name="sam3_binary_mask_teacher",
+        name=f"sam3_binary_mask_teacher_rank{args.rank}",
         config={
             "image_size": IMAGE_SIZE,
             "teacher": "sam3",
             "mask_type": "binary_image_space",
+            "rank": args.rank,
+            "world_size": args.world_size,
         }
     )
 
@@ -129,6 +141,11 @@ def main():
     anns_by_img = {}
     for ann in anns:
         anns_by_img.setdefault(ann["image_id"], []).append(ann)
+
+    # Shard images across workers
+    all_image_ids = sorted(anns_by_img.keys())
+    shard_ids = all_image_ids[args.rank::args.world_size]
+    anns_by_img = {img_id: anns_by_img[img_id] for img_id in shard_ids}
 
     ann_counter = 0
     processed_counter = 0

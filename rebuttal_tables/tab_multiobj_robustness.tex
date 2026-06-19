@@ -1,0 +1,17 @@
+\begin{table}[ht]
+  \centering
+  \small
+  \caption{Segmentation performance stratified by number of competing objects whose centre falls inside the padded bounding-box crop. Results confirm the model is not confused by crowded scenes.}
+  \label{tab:multiobj_robustness}
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{llcccccc}
+    \toprule
+    \textbf{Model} & \textbf{Dataset} & \multicolumn{2}{c}{\textbf{0 competitors}} & \multicolumn{2}{c}{\textbf{1-2 competitors}} & \multicolumn{2}{c}{\textbf{3+ competitors}} \\
+    \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+    & & mIoU & mAP & mIoU & mAP & mIoU & mAP \\
+    \midrule
+    \multirow{2}{*}{PicoSAM3 (distilled)} & COCO val2017 & 0.706 & 0.504 & 0.637 & 0.411 & 0.565 & 0.329 \\
+     & LVIS v1 val & 0.682 & 0.478 & 0.638 & 0.432 & 0.521 & 0.299 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

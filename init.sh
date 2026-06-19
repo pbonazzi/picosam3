@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir -p dataset
-cd dataset
+mkdir -p /datasets/pbonazzi/picosam3_data
+cd /datasets/pbonazzi/picosam3_data
 
 echo "Downloading COCO 2017 dataset and LVIS v1 validation set..."
 
@@ -45,12 +45,12 @@ cd ..
 
 echo "Setting up Python environment..."
 
-conda create -n sam3 python=3.12
+uv venv --python 3.12 .venv
 
-conda activate sam3
+source .venv/bin/activate
 
-python3 setup.py install
+uv pip install -e .
 
 cd model_compression
 
-python3 -m pip install -r requirements.txt
+uv pip install -r requirements.txt

@@ -7,15 +7,17 @@
 - [CUDA toolkits](https://developer.nvidia.com/cuda-toolkit-archive) that match the CUDA version for your PyTorch installation. This should typically be CUDA 12.1 if you follow the default installation command.
 - If you are installing on Windows, it's strongly recommended to use [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) with Ubuntu.
 
-Then, install SAM 2 from the root of this repository via
+Then, create a virtual environment and install SAM 2 from the root of this repository via
 ```bash
-pip install -e ".[notebooks]"
+uv venv --python 3.12 .venv
+source .venv/bin/activate
+uv pip install -e ".[notebooks]"
 ```
 
 Note that you may skip building the SAM 2 CUDA extension during installation via environment variable `SAM2_BUILD_CUDA=0`, as follows:
 ```bash
 # skip the SAM 2 CUDA extension
-SAM2_BUILD_CUDA=0 pip install -e ".[notebooks]"
+SAM2_BUILD_CUDA=0 uv pip install -e ".[notebooks]"
 ```
 This would also skip the post-processing step at runtime (removing small holes and sprinkles in the output masks, which requires the CUDA extension), but shouldn't affect the results in most cases.
 
@@ -27,9 +29,9 @@ If you see a message like `Skipping the post-processing step due to the error ab
 
 If you would like to enable this post-processing step, you can reinstall SAM 2 on a GPU machine with environment variable `SAM2_BUILD_ALLOW_ERRORS=0` to force building the CUDA extension (and raise errors if it fails to build), as follows
 ```bash
-pip uninstall -y SAM-2 && \
+uv pip uninstall SAM-2 && \
 rm -f ./sam2/*.so && \
-SAM2_BUILD_ALLOW_ERRORS=0 pip install -v -e ".[notebooks]"
+SAM2_BUILD_ALLOW_ERRORS=0 uv pip install -v -e ".[notebooks]"
 ```
 
 Note that PyTorch needs to be installed first before building the SAM 2 CUDA extension. It's also necessary to install [CUDA toolkits](https://developer.nvidia.com/cuda-toolkit-archive) that match the CUDA version for your PyTorch installation. (This should typically be CUDA 12.1 if you follow the default installation command.) After installing the CUDA toolkits, you can check its version via `nvcc --version`.
@@ -108,7 +110,7 @@ print `(True, a directory with cuda)` to verify that the CUDA toolkits are corre
 
 If you are still having problems after verifying that the CUDA toolkit is installed and the `CUDA_HOME` environment variable is set properly, you may have to add the `--no-build-isolation` flag to the pip command:
 ```
-pip install --no-build-isolation -e .
+uv pip install --no-build-isolation -e .
 ```
 
 </details>

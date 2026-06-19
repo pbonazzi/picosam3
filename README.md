@@ -18,14 +18,14 @@ If you find this work useful please cite us with the following:
 @article{picosam3_2026,
       title={PicoSAM3: Real-Time In-Sensor Region-of-Interest Segmentation}, 
       author={Pietro Bonazzi and Nicola Farronato and Stefan Zihlmann and Haotong Qin and Michele Magno},
-      journal={arXiv, 2603.11917},
+      journal={IEEE Sensors Journal},
       year={2026}
 }
 
 @article{picosam2_2025,
       title={PicoSAM2: Low-Latency Segmentation In-Sensor for Edge Vision Applications}, 
       author={Bonazzi, Pietro and Farronato, Nicola and Zihlmann, Stefan and Qin, Haotong and Magno, Michele},
-      journal={IEEE SENSORS}, 
+      journal={IEEE Sensors Conference}, 
       year={2025}
 }
 ```
@@ -58,16 +58,16 @@ Afterwards (optional if you just want to use the compression pipeline) download 
 Once the setup is complete, activate the environment:
 
 ```bash
-conda activate sam3
+source .venv/bin/activate
 ```
 
 Then you can run any script inside the `model_compression/` folder:
 
 ```bash 
-python3 -m model_compression.picosam3.picosam3_model_distillation       # Distill student from SAM3
-python3 -m model_compression.picosam3.picosam3_train_from_scratch       # Train supervised baseline
-python3 -m model_compression.picosam3.benchmark                         # Evaluate mIoU, mAP 
-python3 -m model_compression.picosam3.imx500_converter                  # Export ONNX for IMX500
+python3 -m model_compression.scripts.picosam3_model_distillation       # Distill student from SAM3
+python3 -m model_compression.scripts.picosam3_train_from_scratch       # Train supervised baseline
+python3 -m model_compression.scripts.benchmark                         # Evaluate mIoU, mAP 
+python3 -m model_compression.scripts.imx500_converter                  # Export ONNX for IMX500
 ```
 
 ## Deployment on the IMX500
@@ -98,6 +98,17 @@ After setup, the following files are available under `checkpoints/`:
 | `sam2.1_hiera_*.pt`              | SAM 2.1 teacher models (Tiny → Large) |
 
 These are ready for use in training, benchmarking, or deployment.
+
+## Qualitative Results
+
+Side-by-side segmentation comparisons between PicoSAM3 and baseline models on COCO images:
+
+| Scene | Comparison |
+|-------|------------|
+| Airplane | [comparison_airplane.pdf](model_compression/qualitative_results/comparison_airplane.pdf) |
+| Apple | [comparison_apple.pdf](model_compression/qualitative_results/comparison_apple.pdf) |
+| Bench | [comparison_bench.pdf](model_compression/qualitative_results/comparison_bench.pdf) |
+| Zebra | [comparison_zebra.pdf](model_compression/qualitative_results/comparison_zebra.pdf) |
 
 ## Directory Structure
 
