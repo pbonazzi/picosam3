@@ -22,7 +22,7 @@ dependencies = [
     "pycocotools>=2.0.11",
     "wandb>=0.27.0",
     "huggingface-hub>=1.15.0",
-    "decord>=0.6.0",
+    "decord>=0.6.0; platform_machine != 'aarch64'",
     "ftfy>=6.3.1",
     "einops>=0.8.2",
     "timm>=1.0.27",
@@ -37,7 +37,7 @@ notebooks = [
     "matplotlib>=3.9.1",
     "jupyter>=1.0.0",
     "opencv-python>=4.7.0",
-    "eva-decord>=0.6.1",
+    "eva-decord>=0.6.1; platform_machine != 'aarch64'",
 ]
 dev = [
     "black==24.2.0",

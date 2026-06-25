@@ -92,9 +92,10 @@ A ready-to-run interactive segmentation demo is included. Inference runs entirel
 ### Run
 
 ```bash
-uv sync
-uv run python3 demo_imx500.py
+./run_demo.sh
 ```
+
+> `picamera2` and `cv2` are system packages on Raspberry Pi OS — the script uses the system Python directly.
 
 ### Controls
 
@@ -111,7 +112,7 @@ The IMX500 crops the sensor image to the drawn ROI, resizes it to 96×96, and ru
 ### CPU-only demo (no camera needed)
 
 ```bash
-uv run python3 demo_picosam3.py
+python3 demo_picosam3.py
 # Saves result to demo/data/demo_result.png
 ```
 
