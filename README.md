@@ -86,13 +86,14 @@ A ready-to-run interactive segmentation demo is included. Inference runs entirel
 
 - Raspberry Pi 5 with Sony IMX500 AI camera
 - `picamera2` with IMX500 support installed (comes with Raspberry Pi OS)
+- `uv` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 - The compiled `checkpoints/rpk/network.rpk` (download from [HuggingFace](https://huggingface.co/pietrobonazzi/picosam3))
 
 ### Run
 
 ```bash
-source .venv/bin/activate
-python3 demo_imx500.py
+uv sync
+uv run python3 demo_imx500.py
 ```
 
 ### Controls
@@ -110,7 +111,7 @@ The IMX500 crops the sensor image to the drawn ROI, resizes it to 96×96, and ru
 ### CPU-only demo (no camera needed)
 
 ```bash
-python3 demo_picosam3.py
+uv run python3 demo_picosam3.py
 # Saves result to demo/data/demo_result.png
 ```
 
