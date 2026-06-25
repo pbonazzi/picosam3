@@ -59,7 +59,7 @@ PicoSAM2 and PicoSAM3 come with an automated setup script `init.sh` to get every
 ```
 You do **not** need to manually download any datasets or checkpoints — everything is handled by the script.
 
-Afterwards (optional if you just want to use the compression pipeline) download the pretrained PicoSAM2 weights from this [Zenodo folder](https://zenodo.org/records/15728470) and add them to the checkpoints directory.
+Afterwards (optional if you just want to use the compression pipeline) download the pretrained PicoSAM2 weights from this [Zenodo folder](https://zenodo.org/records/15728470) and the PicoSAM3 weights from [HuggingFace](https://huggingface.co/pietrobonazzi/picosam3) and add them to the checkpoints directory.
 
 ## How to Use
 
@@ -94,16 +94,30 @@ imx500-package -i packerOut.zip -o .
 ```
 This creates a network.rpk file, which afterwards can be deployed on the IMX500 using the Picamera2 Script.
 
-## Pretrained Checkpoints (Example PicoSam2)
+## Pretrained Checkpoints
 
 After setup, the following files are available under `checkpoints/`:
 
-| File                             | Description                            |
-|----------------------------------|----------------------------------------|
-| `PicoSAM2_student_epoch1.pt`     | Student model trained via distillation (Google Drive) |
-| `PicoSAM2_student_quantized.onnx`| Quantized export ready for IMX500 conversion (Google Drive) |
-| `PicoSAM2_epoch1.pt`             | Supervised baseline (Google Drive)                    |
-| `sam2.1_hiera_*.pt`              | SAM 2.1 teacher models (Tiny → Large) |
+**PicoSAM3** — available on [HuggingFace](https://huggingface.co/pietrobonazzi/picosam3):
+
+| File                              | Description                                      |
+|-----------------------------------|--------------------------------------------------|
+| `PicoSAM3_student_epoch1.pt`      | Student model trained via distillation           |
+| `PicoSAM3_epoch1.pt`              | Supervised baseline                              |
+
+**PicoSAM2** — available on [Zenodo](https://zenodo.org/records/15728470):
+
+| File                              | Description                                      |
+|-----------------------------------|--------------------------------------------------|
+| `PicoSAM2_student_epoch1.pt`      | Student model trained via distillation           |
+| `PicoSAM2_student_quantized.onnx` | Quantized export ready for IMX500 conversion     |
+| `PicoSAM2_epoch1.pt`              | Supervised baseline                              |
+
+**SAM 2.1 teacher models** (downloaded automatically by `init.sh`):
+
+| File                    | Description                    |
+|-------------------------|--------------------------------|
+| `sam2.1_hiera_*.pt`     | SAM 2.1 teacher models (Tiny → Large) |
 
 These are ready for use in training, benchmarking, or deployment.
 
