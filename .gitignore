@@ -18,3 +18,6 @@ picosam2_env/*
 checkpoints/*.pt
 checkpoints/*.onnx
 checkpoints/images
+checkpoints/imx_out/
+checkpoints/rpk/
+checkpoints/*.data

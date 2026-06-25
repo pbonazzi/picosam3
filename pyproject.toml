@@ -53,11 +53,4 @@ dev = [
     "submitit>=1.5.1",
 ]
 
-[[tool.uv.index]]
-name = "pytorch-cu124"
-url = "https://download.pytorch.org/whl/cu124"
-explicit = true
-
-[tool.uv.sources]
-torch = [{ index = "pytorch-cu124" }]
-torchvision = [{ index = "pytorch-cu124" }]
+# CUDA index removed for CPU-only (aarch64) install

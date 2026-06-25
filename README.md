@@ -78,21 +78,65 @@ python3 -m model_compression.scripts.benchmark                         # Evaluat
 python3 -m model_compression.scripts.imx500_converter                  # Export ONNX for IMX500
 ```
 
+## Live Demo on Raspberry Pi 5 + IMX500
+
+A ready-to-run interactive segmentation demo is included. Inference runs entirely **on the IMX500 sensor** — no CPU compute needed.
+
+### Prerequisites
+
+- Raspberry Pi 5 with Sony IMX500 AI camera
+- `picamera2` with IMX500 support installed (comes with Raspberry Pi OS)
+- The compiled `checkpoints/rpk/network.rpk` (download from [HuggingFace](https://huggingface.co/pietrobonazzi/picosam3))
+
+### Run
+
+```bash
+source .venv/bin/activate
+python3 demo_imx500.py
+```
+
+### Controls
+
+| Action | Effect |
+|---|---|
+| Left-click + drag | Draw a bounding box — the model segments the object inside |
+| `r` | Reset to full frame |
+| `q` / ESC | Quit |
+
+### How it works
+
+The IMX500 crops the sensor image to the drawn ROI, resizes it to 96×96, and runs PicoSAM3 entirely on-chip. The output mask is read back over the MIPI link and overlaid on the live 1280×960 feed via picamera2.
+
+### CPU-only demo (no camera needed)
+
+```bash
+python3 demo_picosam3.py
+# Saves result to demo/data/demo_result.png
+```
+
+---
+
 ## Deployment on the IMX500
 
-From now on, follow the official deployment documentation of the raspberrypi AI Camera: https://www.raspberrypi.com/documentation/accessories/ai-camera.html#model-deployment
+Follow the official Raspberry Pi AI Camera documentation: https://www.raspberrypi.com/documentation/accessories/ai-camera.html#model-deployment
 
-The model converted to IMX500 format from the onnx (Can be done still on your computer): 
+**Step 1 — Quantize** (run on any machine with Python 3.11 + Sony MCT):
 ```bash
-imxconv-pt -i picosam2_student_quantized.onnx -o . --overwrite-output
+conda activate sony_env
+python3 model_compression/scripts/imx500_converter.py
 ```
- Result is a PackerOut.zip which then should be loaded onto the raspberry pi.
 
- Afterwards, on the raspberrypi, run:
- ```bash
-imx500-package -i packerOut.zip -o .
+**Step 2 — Convert to IMX500 format** (requires `imxconv-pt`, run on x86 Linux):
+```bash
+imxconv-pt -i checkpoints/PicoSAM3_student_quantized.onnx -o checkpoints/imx_out --overwrite-output
 ```
-This creates a network.rpk file, which afterwards can be deployed on the IMX500 using the Picamera2 Script.
+
+**Step 3 — Package** (run on Raspberry Pi):
+```bash
+imx500-package checkpoints/imx_out/packerOut.zip checkpoints/rpk/
+```
+
+This produces `checkpoints/rpk/network.rpk`, which `demo_imx500.py` loads automatically.
 
 ## Pretrained Checkpoints
 
