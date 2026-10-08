@@ -130,7 +130,7 @@ python3 model_compression/scripts/imx500_converter.py
 
 **Step 2 — Convert to IMX500 format** (requires `imxconv-pt`, run on x86 Linux):
 ```bash
-imxconv-pt -i checkpoints/PicoSAM3_student_quantized.onnx -o checkpoints/imx_out --overwrite-output
+imxconv-pt -i checkpoints/PicoSAM2_student_quantized.onnx -o checkpoints/imx_out --overwrite-output
 ```
 
 **Step 3 — Package** (run on Raspberry Pi):
