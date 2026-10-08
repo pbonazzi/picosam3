@@ -18,7 +18,7 @@ from pycocotools.coco import COCO
 # ── paths ──────────────────────────────────────────────────────────────────────
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR    = os.path.join(BASE_DIR, "..")
-CKPT_PATH   = os.path.join(ROOT_DIR, "checkpoints", "PicoSAM3_epoch1.pt")
+CKPT_PATH   = os.path.join(ROOT_DIR, "checkpoints", "PicoSAM3_SAM3_student_best.pt")
 DATA_DIR    = "/datasets/pbonazzi/picosam3_data"
 IMG_ROOT    = os.path.join(DATA_DIR, "val2017")
 ANN_FILE    = os.path.join(DATA_DIR, "annotations", "instances_val2017.json")
@@ -30,7 +30,7 @@ N_EXAMPLES  = 80
 DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 sys.path.insert(0, ROOT_DIR)
-from model_compression.model import PicoSAM2 as PicoSAM3
+from model_compression.model import PicoSAM3
 from model_compression.utils import pad_bbox_to_square
 
 # ── transforms ─────────────────────────────────────────────────────────────────

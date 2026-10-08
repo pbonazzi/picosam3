@@ -148,8 +148,7 @@ After setup, the following files are available under `checkpoints/`:
 
 | File                              | Description                                      |
 |-----------------------------------|--------------------------------------------------|
-| `PicoSAM3_student_epoch1.pt`      | Student model trained via distillation           |
-| `PicoSAM3_epoch1.pt`              | Supervised baseline                              |
+| `PicoSAM3_SAM3_student_best.pt`   | Student model distilled from SAM3 (used by `demo_picosam3.py`) |
 
 **PicoSAM2** — available on [Zenodo](https://zenodo.org/records/15728470):
 

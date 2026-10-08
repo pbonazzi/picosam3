@@ -15,10 +15,10 @@ from torchvision import transforms
 from PIL import Image
 from scipy.ndimage import binary_erosion
 
-from model_compression.model import PicoSAM2 as PicoSAM3
+from model_compression.model import PicoSAM3
 from model_compression.utils import pad_bbox_to_square
 
-CKPT_PATH  = os.path.join(os.path.dirname(__file__), "checkpoints", "PicoSAM3_student_epoch1.pt")
+CKPT_PATH  = os.path.join(os.path.dirname(__file__), "checkpoints", "PicoSAM3_SAM3_student_best.pt")
 IMAGE_PATH = os.path.join(os.path.dirname(__file__), "demo", "data", "sample_dog.jpg")
 OUT_PATH   = os.path.join(os.path.dirname(__file__), "demo", "data", "demo_result.png")
 IMAGE_SIZE = 96
